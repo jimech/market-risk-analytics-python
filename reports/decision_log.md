@@ -70,3 +70,28 @@ Simple returns are used in the first version of the project because they are eas
 ## Limitations
 
 Simple returns may be less mathematically convenient than log returns for some advanced modeling tasks. A future version of the project may compare simple returns with log returns.
+
+## Decision 5: Historical risk metrics
+
+The project calculates annualized return, annualized volatility, Sharpe ratio, maximum drawdown, historical VaR, and historical CVaR.
+
+## Reasoning
+
+These metrics provide a first view of portfolio performance, volatility, downside risk, and tail risk.
+
+Annualized return and volatility summarize the portfolio’s average yearly behavior.  
+Maximum drawdown measures the worst historical decline from a previous peak.  
+VaR estimates a loss threshold under normal historical conditions.  
+CVaR estimates the average loss during the worst historical outcomes.
+
+## Decision 6: Risk-free rate assumption
+
+For the first version of the Sharpe ratio calculation, I use a 0% annual risk-free rate.
+
+## Reasoning
+
+This keeps the first version simple and focused on the mechanics of risk measurement. A future version can improve the model by using an actual Treasury yield or another market-based risk-free rate.
+
+## Limitations
+
+Historical risk metrics depend on the selected time period and assume that historical behavior is informative. VaR and CVaR based on historical returns may not fully capture future crises or market regimes that did not appear in the sample.
