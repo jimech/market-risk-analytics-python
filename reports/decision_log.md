@@ -26,3 +26,33 @@ The weights are assumed, not optimized.
 The portfolio is ETF-based and simplified.  
 It does not include individual stocks, derivatives, currencies, commodities other than gold, private assets, or real estate.  
 The portfolio should be treated as an educational case study, not an investment recommendation.
+
+## Decision 2: Analysis period
+
+The selected analysis period is 2019-01-01 to 2024-12-31.
+
+## Reasoning
+
+This period includes multiple market regimes, including the pre-COVID market environment, the COVID-19 crash, the post-COVID recovery, the 2022 inflation and interest-rate shock, and the 2023–2024 recovery period.
+
+This makes the period useful for studying volatility, drawdowns, correlation, downside risk, stress scenarios, and recovery behavior.
+
+## Limitations
+
+The analysis depends on the selected historical period. Results may change significantly if a longer or shorter period is used. Historical behavior may not represent future market behavior.
+
+## Decision 3: Historical price data
+
+Historical daily price data is downloaded using `yfinance`.
+
+The project uses adjusted closing prices because adjusted prices account for dividends and splits, making them more suitable for return and risk calculations.
+
+The selected start date is 2019-01-01. The end date is left open so the notebook uses the latest available market data whenever it is rerun.
+
+## Reasoning
+
+Using recent and automatically updated data makes the project behave like a living market risk analytics workflow instead of a static historical report.
+
+## Limitations
+
+The project depends on the availability and quality of data from `yfinance`. Data issues, missing values, ticker changes, or provider limitations may affect the results.
