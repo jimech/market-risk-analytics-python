@@ -56,3 +56,17 @@ Using recent and automatically updated data makes the project behave like a livi
 ## Limitations
 
 The project depends on the availability and quality of data from `yfinance`. Data issues, missing values, ticker changes, or provider limitations may affect the results.
+
+## Decision 4: Return calculation method
+
+Daily simple percentage returns are calculated from adjusted closing prices using `pct_change()`.
+
+## Reasoning
+
+Returns are used instead of raw prices because risk metrics such as volatility, drawdown, VaR, CVaR, and portfolio risk contribution are based on changes in value, not price levels.
+
+Simple returns are used in the first version of the project because they are easier to interpret and explain than log returns.
+
+## Limitations
+
+Simple returns may be less mathematically convenient than log returns for some advanced modeling tasks. A future version of the project may compare simple returns with log returns.
