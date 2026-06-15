@@ -95,3 +95,37 @@ This keeps the first version simple and focused on the mechanics of risk measure
 ## Limitations
 
 Historical risk metrics depend on the selected time period and assume that historical behavior is informative. VaR and CVaR based on historical returns may not fully capture future crises or market regimes that did not appear in the sample.
+
+## Decision 7: Correlation and risk contribution analysis
+
+The project includes a correlation matrix and asset-level risk contribution analysis.
+
+## Reasoning
+
+Correlation helps evaluate whether the portfolio is truly diversified or whether assets tend to move together.
+
+Risk contribution analysis helps identify which holdings drive the largest share of total portfolio volatility. This is more informative than looking at portfolio weights alone because a smaller position can still contribute significantly to risk if it is volatile or highly correlated with other assets.
+
+## Limitations
+
+Correlation is estimated using historical returns and may change over time, especially during market stress. Risk contribution is based on volatility and covariance, so it does not fully capture tail risk, liquidity risk, or sudden regime changes.
+
+## Decision 8: Stress testing framework
+
+The project includes several hypothetical stress scenarios:
+
+- Equity Market Crash
+- Technology Selloff
+- Interest Rate Shock
+- Emerging Market Crisis
+- Broad Risk-Off Event
+
+Each scenario applies assumed percentage shocks to the assets in the portfolio. The total portfolio impact is calculated as the weighted sum of asset-level shocks.
+
+## Reasoning
+
+Stress testing helps evaluate how the portfolio may behave under adverse market conditions. This is useful because historical averages, volatility, and VaR may not fully communicate the impact of specific market events.
+
+## Limitations
+
+The stress scenarios are hypothetical and simplified. They are not forecasts. The assumed shocks are manually selected and may not match real future market behavior. The analysis also assumes instant price changes and does not model liquidity, trading costs, changing correlations, or investor behavior during stress.
