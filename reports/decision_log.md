@@ -171,3 +171,17 @@ A 63-day window is used because it approximates one trading quarter, making it s
 ## Limitations
 
 Rolling metrics are sensitive to the selected window size. A shorter window may be noisy, while a longer window may react slowly to new market conditions. These metrics are backward-looking and do not predict future risk.
+
+## Decision 12: VaR method comparison
+
+The project compares historical VaR, parametric normal VaR, and Monte Carlo normal VaR at 95% and 99% confidence levels.
+
+## Reasoning
+
+Different VaR methods rely on different assumptions. Historical VaR uses the actual observed return distribution. Parametric VaR assumes normally distributed returns. Monte Carlo VaR estimates risk through simulation.
+
+Comparing these methods helps evaluate whether downside risk estimates are sensitive to the selected methodology.
+
+## Limitations
+
+The parametric and Monte Carlo methods in this version assume normally distributed returns. This may underestimate extreme market losses if returns have fat tails, skewness, volatility clustering, or regime changes.
