@@ -185,3 +185,19 @@ Comparing these methods helps evaluate whether downside risk estimates are sensi
 ## Limitations
 
 The parametric and Monte Carlo methods in this version assume normally distributed returns. This may underestimate extreme market losses if returns have fat tails, skewness, volatility clustering, or regime changes.
+
+## Decision 13: VaR backtesting
+
+The project includes VaR backtesting using a 252-day rolling historical VaR model at the 95% confidence level.
+
+A VaR exception occurs when the actual daily portfolio return is worse than the estimated VaR threshold.
+
+The project also applies the Kupiec Proportion of Failures test to compare the actual exception rate against the expected exception rate.
+
+## Reasoning
+
+Backtesting helps evaluate whether the VaR model is reasonably calibrated. Instead of only calculating VaR, the project tests how often actual losses exceeded the estimated VaR threshold.
+
+## Limitations
+
+The Kupiec test evaluates the number of exceptions but does not test whether exceptions are clustered over time. The backtest also depends on the selected rolling window, confidence level, and historical sample.
