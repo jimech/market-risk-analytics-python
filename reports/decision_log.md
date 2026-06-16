@@ -223,3 +223,17 @@ During implementation, the notebook initially raised an error because `asset_lev
 I corrected the execution order so that the asset-level simulation summary table is defined before being formatted and displayed.
 
 The notebook was then rerun end-to-end from the terminal to verify that all cells execute successfully.
+
+## Decision 15: Historical bootstrap simulation
+
+The project adds a one-year bootstrap simulation using historical portfolio returns.
+
+## Reasoning
+
+The bootstrap simulation improves the risk analysis by avoiding the normal-distribution assumption. Instead of generating simulated returns from a normal distribution, it resamples actual historical daily returns with replacement.
+
+This allows the simulation to reflect observed historical skewness, fat tails, and downside return behavior.
+
+## Limitations
+
+The bootstrap method is still historical and backward-looking. It can only simulate return patterns that are present in the historical sample. It does not create new crisis scenarios, structural market changes, liquidity shocks, or regime shifts that did not appear in the data.
