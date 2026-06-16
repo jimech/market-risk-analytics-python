@@ -1,6 +1,6 @@
 # Market Risk Analytics in Python
 
-![Python Tests](https://github.com/YOUR_USERNAME/market-risk-analytics-python/actions/workflows/tests.yml/badge.svg)
+![Python Tests](https://github.com/jimech/market-risk-analytics-python/actions/workflows/tests.yml/badge.svg)
 
 Python-based market risk analytics workflow for a diversified ETF portfolio. The project measures historical performance, downside risk, diversification quality, stress scenario exposure, Value at Risk, Conditional Value at Risk, rolling regime behavior, VaR model calibration, and Monte Carlo downside outcomes.
 
