@@ -157,3 +157,17 @@ Risk analytics is not only about calculating metrics. The results must be transl
 ## Limitations
 
 The interpretation depends on the selected portfolio, time period, assumptions, and data source. The conclusions should be treated as analytical observations, not investment advice.
+
+## Decision 11: Rolling risk analytics
+
+The project adds rolling volatility, rolling Sharpe ratio, rolling maximum drawdown, and rolling correlation with SPY using a 63-day rolling window.
+
+## Reasoning
+
+Risk is not constant over time. Rolling metrics help identify how portfolio risk, risk-adjusted performance, drawdowns, and equity-market dependence change across different market environments.
+
+A 63-day window is used because it approximates one trading quarter, making it short enough to detect changing risk conditions while still containing enough observations to calculate meaningful statistics.
+
+## Limitations
+
+Rolling metrics are sensitive to the selected window size. A shorter window may be noisy, while a longer window may react slowly to new market conditions. These metrics are backward-looking and do not predict future risk.
