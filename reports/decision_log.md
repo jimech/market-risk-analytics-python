@@ -237,3 +237,24 @@ This allows the simulation to reflect observed historical skewness, fat tails, a
 ## Limitations
 
 The bootstrap method is still historical and backward-looking. It can only simulate return patterns that are present in the historical sample. It does not create new crisis scenarios, structural market changes, liquidity shocks, or regime shifts that did not appear in the data.
+
+## Decision 16: Refactor reusable code into source modules
+
+The project refactors reusable logic into Python modules inside the `src/` folder.
+
+The modules include:
+
+- `data_loader.py` for downloading adjusted closing prices
+- `risk_metrics.py` for return, drawdown, VaR, CVaR, Sharpe ratio, and risk contribution functions
+- `stress_tests.py` for scenario impact calculations
+- `simulations.py` for Monte Carlo and bootstrap simulations
+
+## Reasoning
+
+Refactoring makes the project more professional, reusable, and easier to maintain. It separates analysis from implementation logic, which is closer to how production analytics projects are structured.
+
+This also demonstrates software engineering skills in addition to financial analytics.
+
+## Limitations
+
+The notebook still contains exploratory analysis and visualization code. Future improvements could move plotting functions into a dedicated `visualizations.py` module and add automated tests.
