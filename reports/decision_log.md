@@ -129,3 +129,31 @@ Stress testing helps evaluate how the portfolio may behave under adverse market 
 ## Limitations
 
 The stress scenarios are hypothetical and simplified. They are not forecasts. The assumed shocks are manually selected and may not match real future market behavior. The analysis also assumes instant price changes and does not model liquidity, trading costs, changing correlations, or investor behavior during stress.
+
+## Decision 9: Monte Carlo simulation
+
+The project includes a one-year Monte Carlo simulation with 10,000 simulated portfolio paths.
+
+The simulation uses the historical daily mean return and daily volatility of the portfolio as inputs.
+
+## Reasoning
+
+Monte Carlo simulation helps estimate a range of possible future outcomes instead of relying on a single expected return. It allows the project to analyze downside and upside scenarios, simulated ending values, and simulated one-year VaR and CVaR.
+
+## Limitations
+
+This first version assumes normally distributed daily portfolio returns. This is a simplified assumption and may underestimate extreme losses. The model also assumes that historical mean and volatility are reasonable inputs for future simulations.
+
+Future improvements may include bootstrapped historical returns, fat-tailed distributions, asset-level correlated simulations, or regime-based simulations.
+
+## Decision 10: Results interpretation framework
+
+The project includes a final interpretation section that summarizes the main findings from the historical risk metrics, correlation analysis, risk contribution analysis, stress testing, and Monte Carlo simulation.
+
+## Reasoning
+
+Risk analytics is not only about calculating metrics. The results must be translated into clear insights about diversification, downside risk, concentration risk, and model limitations.
+
+## Limitations
+
+The interpretation depends on the selected portfolio, time period, assumptions, and data source. The conclusions should be treated as analytical observations, not investment advice.
