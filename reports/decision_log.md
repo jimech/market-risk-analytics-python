@@ -201,3 +201,25 @@ Backtesting helps evaluate whether the VaR model is reasonably calibrated. Inste
 ## Limitations
 
 The Kupiec test evaluates the number of exceptions but does not test whether exceptions are clustered over time. The backtest also depends on the selected rolling window, confidence level, and historical sample.
+
+## Decision 14: Correlated asset-level Monte Carlo simulation
+
+The project adds a correlated asset-level Monte Carlo simulation using the historical mean return vector and covariance matrix of the assets.
+
+## Reasoning
+
+The original Monte Carlo simulation modeled only the portfolio return. The asset-level simulation is more advanced because it models each asset separately and preserves the historical covariance structure between assets.
+
+This allows the simulation to reflect how individual asset volatilities and correlations affect total portfolio risk.
+
+## Limitations
+
+The model assumes normally distributed asset returns and uses historical covariance as an estimate of future covariance. It does not capture fat tails, volatility clustering, regime changes, liquidity constraints, or changing correlations during market stress.
+
+### Technical correction
+
+During implementation, the notebook initially raised an error because `asset_level_simulation_summary` was referenced before it was created.
+
+I corrected the execution order so that the asset-level simulation summary table is defined before being formatted and displayed.
+
+The notebook was then rerun end-to-end from the terminal to verify that all cells execute successfully.
