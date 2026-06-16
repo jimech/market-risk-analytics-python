@@ -1,5 +1,7 @@
 # Market Risk Analytics in Python
 
+![Python Tests](https://github.com/YOUR_USERNAME/market-risk-analytics-python/actions/workflows/tests.yml/badge.svg)
+
 Python-based market risk analytics workflow for a diversified ETF portfolio. The project measures historical performance, downside risk, diversification quality, stress scenario exposure, Value at Risk, Conditional Value at Risk, rolling regime behavior, VaR model calibration, and Monte Carlo downside outcomes.
 
 This repository is designed as a practical risk-management notebook rather than a simple return chart. It asks the core portfolio risk question:
@@ -7,6 +9,68 @@ This repository is designed as a practical risk-management notebook rather than 
 > How much can this portfolio lose, where does that risk come from, and how reliable are the assumptions behind the model?
 
 This project is for educational and analytical purposes only. It is not investment advice.
+
+## Project Highlights
+
+- Built a complete Python-based market risk analytics workflow
+- Analyzed a multi-asset ETF portfolio using historical market data
+- Calculated annualized return, volatility, Sharpe ratio, maximum drawdown, VaR, and CVaR
+- Measured diversification using correlation, covariance, and asset-level risk contribution
+- Designed stress tests for adverse market scenarios
+- Compared historical, parametric, Monte Carlo, and bootstrap risk methods
+- Backtested rolling historical VaR with exception analysis and the Kupiec test
+- Added correlated asset-level Monte Carlo simulation using the covariance matrix and Cholesky decomposition
+- Refactored reusable analytics logic into Python modules under `src/`
+- Added automated tests with `pytest`
+- Added GitHub Actions continuous integration
+
+## Example Results Snapshot
+
+The notebook updates as new market data becomes available. In one executed run, the portfolio showed the following risk profile:
+
+| Metric | Result |
+| --- | ---: |
+| Largest risk contributor | SPY |
+| SPY risk contribution | 34.82% |
+| Highest average correlation | EFA, 0.62 |
+| Lowest average correlation | GLD, 0.20 |
+| Maximum historical drawdown | -24.14% |
+| 95% daily historical VaR loss | 1.21% |
+| 95% daily historical CVaR loss | 1.92% |
+| Worst stress scenario | Equity Market Crash |
+| Worst stress scenario impact | -16.95% |
+| One-year Monte Carlo VaR loss | 9.68% |
+| One-year Monte Carlo CVaR loss | 14.43% |
+
+The main conclusion is that the portfolio is diversified by asset category, but its risk is still primarily driven by equity exposure.
+
+## Visual Outputs
+
+The notebook generates the following visual outputs. Export the charts into `output/charts/` so they render directly in the GitHub README.
+
+### Portfolio Growth
+
+![Portfolio Growth](output/charts/portfolio_growth.png)
+
+### Portfolio Drawdown
+
+![Portfolio Drawdown](output/charts/portfolio_drawdown.png)
+
+### Risk Contribution by Asset
+
+![Risk Contribution](output/charts/risk_contribution.png)
+
+### Stress Scenario Impact
+
+![Stress Scenario Impact](output/charts/stress_scenarios.png)
+
+### Monte Carlo Simulation
+
+![Monte Carlo Simulation](output/charts/monte_carlo_paths.png)
+
+### VaR Backtesting
+
+![VaR Backtesting](output/charts/var_backtesting.png)
 
 ## Portfolio
 
@@ -38,9 +102,13 @@ The main notebook, [01_portfolio_risk_modeling.ipynb](notebooks/01_portfolio_ris
 8. Simulate one-year portfolio outcomes with Monte Carlo methods.
 9. Generate professional risk interpretation and limitations.
 10. Extend the model with rolling risk analytics.
-11. Compare historical, parametric, and Monte Carlo VaR methods.
+11. Compare historical, parametric, Monte Carlo, and bootstrap VaR methods.
 12. Backtest rolling historical VaR using exception analysis and the Kupiec test.
 13. Improve Monte Carlo modeling with correlated asset-level simulation.
+14. Run historical bootstrap simulation to avoid the normal-distribution assumption.
+15. Refactor reusable analytics logic into `src/` modules.
+16. Validate reusable functions with automated tests.
+17. Run tests automatically with GitHub Actions.
 
 ## Core Financial Concepts
 
@@ -126,10 +194,10 @@ CVaR is usually more informative than VaR because it focuses on tail severity, n
 
 The notebook evaluates whether the portfolio is truly diversified by measuring:
 
-- Pairwise asset correlations.
-- Average correlation of each asset with the rest of the portfolio.
-- Covariance-based portfolio volatility.
-- Marginal and percentage contribution to total portfolio risk.
+- Pairwise asset correlations
+- Average correlation of each asset with the rest of the portfolio
+- Covariance-based portfolio volatility
+- Marginal and percentage contribution to total portfolio risk
 
 Correlation is critical because a portfolio can hold many assets and still be weakly diversified if those assets sell off together.
 
@@ -174,7 +242,7 @@ Stress testing is not a prediction. It is a risk control tool for identifying vu
 
 ## Monte Carlo Simulation
 
-The project includes two Monte Carlo approaches.
+The project includes three simulation approaches.
 
 ### Portfolio-Level Normal Monte Carlo
 
@@ -188,12 +256,12 @@ The simulation generates 10,000 one-year paths over a 252-trading-day horizon an
 
 From those simulated paths, the notebook estimates:
 
-- Mean ending value.
-- Median ending value.
-- 5th and 95th percentile ending values.
-- Worst and best simulated ending values.
-- One-year Monte Carlo VaR.
-- One-year Monte Carlo CVaR.
+- Mean ending value
+- Median ending value
+- 5th and 95th percentile ending values
+- Worst and best simulated ending values
+- One-year Monte Carlo VaR
+- One-year Monte Carlo CVaR
 
 This model is useful as a baseline, but it assumes normally distributed portfolio returns and therefore may underestimate extreme downside risk.
 
@@ -201,10 +269,10 @@ This model is useful as a baseline, but it assumes normally distributed portfoli
 
 The advanced simulation models each asset separately. It uses:
 
-- Historical asset mean return vector.
-- Historical asset covariance matrix.
-- Cholesky decomposition to generate correlated random shocks.
-- Portfolio weights to combine simulated asset returns into portfolio returns.
+- Historical asset mean return vector
+- Historical asset covariance matrix
+- Cholesky decomposition to generate correlated random shocks
+- Portfolio weights to combine simulated asset returns into portfolio returns
 
 The structure is:
 
@@ -217,28 +285,41 @@ This is more realistic than simulating the portfolio as a single normal process 
 
 However, it still assumes normal asset returns and static covariance. It does not capture fat tails, volatility clustering, liquidity shocks, regime shifts, or correlation breakdowns during crises.
 
+### Historical Bootstrap Simulation
+
+The bootstrap simulation resamples actual historical portfolio returns with replacement:
+
+```text
+Bootstrap Daily Return = random sample from historical portfolio returns
+```
+
+This avoids the normal-distribution assumption and helps preserve features such as observed skewness, fat tails, and historical downside moves.
+
+The limitation is that bootstrap simulation can only generate outcomes based on events present in the historical sample. It cannot create a new crisis that is structurally different from the past.
+
 ## Rolling Risk Analytics
 
 Static full-period metrics can hide risk regime changes, so the notebook also calculates rolling analytics using a 63-trading-day window, approximately one quarter.
 
 Rolling metrics include:
 
-- Rolling annualized volatility.
-- Rolling Sharpe ratio.
-- Rolling maximum drawdown.
-- Rolling correlation between the portfolio and SPY.
+- Rolling annualized volatility
+- Rolling Sharpe ratio
+- Rolling maximum drawdown
+- Rolling correlation between the portfolio and SPY
 
 These diagnostics show how portfolio risk changes across market environments. A portfolio can look diversified over a long sample but become highly correlated with equities during stress periods, exactly when diversification is most valuable.
 
 ## VaR Method Comparison
 
-The notebook compares three VaR/CVaR methods at 95% and 99% confidence levels.
+The notebook compares multiple VaR/CVaR methods at 95% and 99% confidence levels.
 
 | Method | Description | Strength | Weakness |
 | --- | --- | --- | --- |
 | Historical VaR | Uses actual observed portfolio returns | Captures realized historical distribution | Limited to past sample |
 | Parametric VaR | Uses mean, volatility, and normal distribution assumption | Simple and fast | Can underestimate fat tails |
 | Monte Carlo Normal VaR | Simulates returns using normal assumptions | Flexible simulation framework | Still normality-dependent |
+| Bootstrap VaR | Resamples actual historical returns | Avoids normality assumption | Cannot simulate unseen regimes |
 
 Comparing methods is useful because large differences between historical and normal-based VaR estimates may indicate skewness, fat tails, or market stress behavior that normal models do not capture well.
 
@@ -271,6 +352,7 @@ The notebook's results update as new market data becomes available. In the curre
 - Stress tests show the portfolio is most vulnerable to broad equity market selloffs.
 - Monte Carlo simulations show meaningful one-year downside potential under historical mean and volatility assumptions.
 - The asset-level Monte Carlo model gives a richer view of risk because it models covariance between assets instead of treating the portfolio as one aggregate process.
+- Bootstrap simulation gives a useful alternative view because it avoids assuming normally distributed returns.
 
 ## Key Limitations
 
@@ -291,11 +373,27 @@ This project intentionally keeps the model transparent and educational. Importan
 
 ```text
 market-risk-analytics-python/
+├── .github/
+│   └── workflows/
+│       └── tests.yml
 ├── notebooks/
 │   ├── 01_portfolio_risk_modeling.ipynb
 │   └── executed_01_portfolio_risk_modeling.ipynb
+├── outputs/
+│   └── charts/
 ├── reports/
-│   └── decision_log.md
+│   ├── decision_log.md
+│   └── executive_summary.md
+├── src/
+│   ├── __init__.py
+│   ├── data_loader.py
+│   ├── risk_metrics.py
+│   ├── simulations.py
+│   └── stress_tests.py
+├── tests/
+│   ├── test_risk_metrics.py
+│   ├── test_simulations.py
+│   └── test_stress_tests.py
 ├── README.md
 ├── requirements.txt
 └── .gitignore
@@ -303,11 +401,30 @@ market-risk-analytics-python/
 
 ## How to Run
 
-From the project root:
+Clone the repository:
 
 ```bash
-cd /Users/jimenachinchilla/market-risk-analytics-python
+git clone https://github.com/YOUR_USERNAME/market-risk-analytics-python.git
+cd market-risk-analytics-python
+```
+
+Create and activate a virtual environment:
+
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+Launch JupyterLab:
+
+```bash
 python -m jupyter lab
 ```
 
@@ -317,19 +434,10 @@ Then open:
 notebooks/01_portfolio_risk_modeling.ipynb
 ```
 
-If running from a fresh environment:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m jupyter lab
-```
-
 To execute the notebook from the terminal and save a results notebook:
 
 ```bash
-MPLCONFIGDIR=.matplotlib-cache .venv/bin/jupyter nbconvert \
+MPLCONFIGDIR=.matplotlib-cache python -m jupyter nbconvert \
   --to notebook \
   --execute notebooks/01_portfolio_risk_modeling.ipynb \
   --output executed_01_portfolio_risk_modeling.ipynb
@@ -341,6 +449,23 @@ The executed notebook will be saved as:
 notebooks/executed_01_portfolio_risk_modeling.ipynb
 ```
 
+## Testing
+
+Run the test suite from the project root:
+
+```bash
+python -m pytest
+```
+
+GitHub Actions automatically runs the test suite on pushes and pull requests to `main`.
+
+## Reports
+
+The project includes supporting documentation:
+
+- [Decision Log](reports/decision_log.md): documents major modeling and implementation decisions.
+- [Executive Summary](reports/executive_summary.md): summarizes the main risk findings and limitations.
+
 ## Technical Stack
 
 - Python
@@ -350,23 +475,25 @@ notebooks/executed_01_portfolio_risk_modeling.ipynb
 - scipy
 - yfinance
 - Jupyter Notebook / JupyterLab
+- pytest
+- GitHub Actions
 
 ## Possible Extensions
 
 Future improvements could include:
 
-- Optimized portfolios using mean-variance optimization.
-- Risk parity allocation.
-- Expected shortfall optimization.
-- Bootstrapped historical Monte Carlo.
-- Student-t or skewed fat-tail return distributions.
-- GARCH volatility modeling.
-- Regime-switching covariance models.
-- Component VaR and incremental VaR.
-- Factor-based risk decomposition.
-- Liquidity-adjusted VaR.
-- Conditional coverage VaR backtesting.
-- Automated report generation.
+- Optimized portfolios using mean-variance optimization
+- Risk parity allocation
+- Expected shortfall optimization
+- Student-t or skewed fat-tail return distributions
+- GARCH volatility modeling
+- Regime-switching covariance models
+- Component VaR and incremental VaR
+- Factor-based risk decomposition
+- Liquidity-adjusted VaR
+- Conditional coverage VaR backtesting
+- Streamlit dashboard
+- Automated PDF or HTML report generation
 
 ## Summary
 
